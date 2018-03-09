@@ -27,6 +27,7 @@ public class LearnController {
 	}
 	@RequestMapping("/query1")
 	public List<LearnResource> query1() {
+		PageHelper.startPage(2,3);
 		List<LearnResource> list=learnService.query();
 		System.out.println(list);
 		return list;
