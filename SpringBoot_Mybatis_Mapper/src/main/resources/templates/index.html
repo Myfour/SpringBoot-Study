@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<head>
+<title>old page</title>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<link rel="stylesheet" th:href="@{bootstrap/css/bootstrap.min.css}" />
+<link rel="stylesheet" th:href="@{bootstrap/css/bootstrap-theme.css}" />
+<script type="text/javascript" th:src="@{jquery-3.3.1.min.js}"></script>
+<script type="text/javascript" th:src="@{bootstrap/js/bootstrap.min.js}"></script>
+</head>
+<body style="background-image: none;">
+
+	<div>
+		<div class="jumpbotron">
+			<code>Myfour's Thymeleaf</code>
+			<table class="table table-bordered">
+				<tr>
+					<td>所有人</td>
+					<td>名称</td>
+					<td>网址</td>
+				</tr>
+				<!--/*@thymesVar id="learnList" type=""*/-->
+				<tr th:if="${not #lists.isEmpty(mylist)}" th:each="item : ${mylist}"
+					class="text-info">
+					<td th:text="${item.owner}">Myfour</td>
+					<td th:text="${item.webname}">BestMyfour</td>
+					<td><a href="#" th:href="${item.address}"
+						class="btn btn-success" target="_blank"><span>click me</span></a>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</body>
+</html>
