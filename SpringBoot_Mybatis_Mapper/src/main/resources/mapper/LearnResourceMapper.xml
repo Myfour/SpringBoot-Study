@@ -10,4 +10,16 @@
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="url" jdbcType="VARCHAR" property="url" />
   </resultMap>
+  
+  <select id="queryLearnResourceList" resultMap="BaseResultMap">
+  	select * from learn_resource
+  	<where>
+  		<if test="author!=null and author!=''">
+  			and author=#{author}
+  		</if>
+  		<if test="title!=null and title!=''">
+  			and title=#{author}
+  		</if>
+  	</where>
+  </select>
 </mapper>
