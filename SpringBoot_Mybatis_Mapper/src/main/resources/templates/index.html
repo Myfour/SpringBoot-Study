@@ -34,40 +34,82 @@
 		</div>
 	</div>
 	<script type="text/javascript">
-		$(function() {
+		function pageHtml(pageNum) {
+			
+			if (pageNum == 0) {
+				pageNum = 1;
+			} else {
+				pageNum = pageNum;
+			}
+			
 			$.ajax({
-				type : "get",
 				url : "/learn/query",
-				data : {
-					PageNum : 1
-				},
+				type : "get",
 				dataType : "json",
+				data : {
+					PageNum : pageNum
+				},
 				success : function(data) {
-					/* console.log(data) */
+					console.log(data);
 					var options = {
-						bootstrapMajorVersion : 3,
-						currentPage : data.pageNum,
-						totalPages : data.pages,
-						shouldShowPage : true,
-						onPageClicked : function(e, originalEvent, type, page) {
-							console.log("当前页：");
-							console.log(data.pageNum);
-							location.href = "/learn/query?PageNum=" + page;
-							
+						bootstrapMajorVersion : 3,//需要指定相应的版本
+						alignment : "center",
+						currentPage : data.pageNum,//当前页码
+						totalPages : data.pages,//总页数
+						shouldShowPage:true,//是否始终显示首末页按钮
+			            itemTexts: function (type, page, current) {
+
+			                switch (type) {
+
+			                    case "first":
+
+			                        return "首页";
+
+			                    case "prev":
+
+			                        return "上一页";
+
+			                    case "next":
+
+			                        return "下一页";
+
+			                    case "last":
+
+			                        return "末页";
+
+			                    case "page":
+
+			                        return page;
+
+			                   }
+			                },//修改按钮的文字显示
+			                //numberOfPages: 5,//一页显示几个按钮  
+			            //onPageClicked: function (event, originalEvent, type, page) {},//点击事件
+						pageUrl : function(type, page, current) {
+							if (page == current) {
+								return "javascript:void(0)";
+							} else {
+								return "javascript:pageHtml(" + page + ")";
+							}
 						}
 					};
+					var html = "";
+					//下面拼接Html时，应该单个标签单个标签的来拼接'<tr>'+xxx+'</tr>'
 					$.each(data.list, function(i, obj) {
-						html = '<tr class="text-info"><td>' + obj.author
+						html += '<tr id="de" class="text-info"><td>' + obj.author
 								+ '</td>' + '<td>' + obj.title + '</td>'
 								+ '<td><a href="'+obj.url+'">' + obj.url
 								+ '</a></td>' + '</tr>';
-						$("#contents").append(html);
 					});
-					$('#data-pagination').bootstrapPaginator(options);
-					console.log(data);
-
+					$("#contents tr:not(:first)").empty();//利用选择器清空除表头意外的所有元素
+					$("#contents").append(html);
+					
+					$("#data-pagination").bootstrapPaginator(options);//初始化paginator这个插件
 				}
 			});
+		}
+		$(function() {
+			pageHtml(1);
 		});
 	</script>
 </body>

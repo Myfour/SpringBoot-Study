@@ -21,8 +21,7 @@ public class LearnController {
 	@RequestMapping("/query")
 	public PageInfo<LearnResource> query(@RequestParam(required=false) Integer PageNum) {
 		LearnResource learnResource = new LearnResource();
-
-		PageHelper.startPage(PageNum, 3);
+		PageHelper.startPage(PageNum, 1);
 		List<LearnResource> list = learnService.queryLearnResourceList(learnResource);
 		PageInfo<LearnResource> pageInfo = new PageInfo<>(list);
 		System.out.println(pageInfo);
