@@ -13,7 +13,7 @@ public class LearnService {
 	@Autowired
 	private LearnResourceMapper learnResourceMapper;
 	public List<LearnResource> queryLearnResourceList(LearnResource learnResource){
-		return learnResourceMapper.queryLearnResourceList(learnResource);
+		return learnResourceMapper.selectAll();
 	}
 	
 	public List<LearnResource> query(){

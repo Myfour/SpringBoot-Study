@@ -7,29 +7,68 @@
 <link rel="stylesheet" th:href="@{bootstrap/css/bootstrap-theme.css}" />
 <script type="text/javascript" th:src="@{jquery-3.3.1.min.js}"></script>
 <script type="text/javascript" th:src="@{bootstrap/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{bootstrap-paginator.js}"></script>
 </head>
 <body style="background-image: none;">
-
 	<div>
+		<code>Myfour's Page</code>
 		<div class="jumpbotron">
-			<code>Myfour's Thymeleaf</code>
-			<table class="table table-bordered">
+
+			<table id="contents" class="table table-bordered">
 				<tr>
 					<td>所有人</td>
 					<td>名称</td>
 					<td>网址</td>
 				</tr>
-				<!--/*@thymesVar id="learnList" type=""*/-->
-				<tr th:if="${not #lists.isEmpty(mylist)}" th:each="item : ${mylist}"
+				<!-- 	<tr th:if="${not #lists.isEmpty(pageinfo.list)}" th:each="item : ${pageinfo.list}"
 					class="text-info">
 					<td th:text="${item.owner}">Myfour</td>
 					<td th:text="${item.webname}">BestMyfour</td>
 					<td><a href="#" th:href="${item.address}"
 						class="btn btn-success" target="_blank"><span>click me</span></a>
 					</td>
-				</tr>
+				</tr> -->
+
 			</table>
+			<ul id='data-pagination'></ul>
 		</div>
 	</div>
+	<script type="text/javascript">
+		$(function() {
+			$.ajax({
+				type : "get",
+				url : "/learn/query",
+				data : {
+					PageNum : 1
+				},
+				dataType : "json",
+				success : function(data) {
+					/* console.log(data) */
+					var options = {
+						bootstrapMajorVersion : 3,
+						currentPage : data.pageNum,
+						totalPages : data.pages,
+						shouldShowPage : true,
+						onPageClicked : function(e, originalEvent, type, page) {
+							console.log("当前页：");
+							console.log(data.pageNum);
+							location.href = "/learn/query?PageNum=" + page;
+							
+						}
+					};
+					$.each(data.list, function(i, obj) {
+						html = '<tr class="text-info"><td>' + obj.author
+								+ '</td>' + '<td>' + obj.title + '</td>'
+								+ '<td><a href="'+obj.url+'">' + obj.url
+								+ '</a></td>' + '</tr>';
+						$("#contents").append(html);
+					});
+					$('#data-pagination').bootstrapPaginator(options);
+					console.log(data);
+
+				}
+			});
+		});
+	</script>
 </body>
 </html>
